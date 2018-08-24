@@ -57,7 +57,7 @@ def falling(player, column):
 
 def render():
     clear()
-    line1 = "     "
+    line1 = "    "
     rangerow = 1
     rangecolumn = 1
     while rangecolumn != maxcolumn + 1:
@@ -66,7 +66,7 @@ def render():
     print(line1)
     rangecolumn = 1
     while rangerow != maxrow + 1:
-        line = "  " + str(rangerow) + "  "
+        line = " " + str(rangerow) + "  "
         while rangecolumn != maxcolumn + 1:
             if board[str(rangecolumn) + "," + str(rangerow)] == 0:
                 line += "-  "
