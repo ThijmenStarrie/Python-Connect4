@@ -31,8 +31,11 @@ def turn(player):
                 entering = False
                 falling(player, column)
             else:
-                print("This column is full")
-        except ValueError or KeyError:
+                print("\nThis column is full")
+        except ValueError:
+            render()
+            print("\nEnter a valid number")
+        except KeyError:
             render()
             print("\nEnter a valid number")
 
