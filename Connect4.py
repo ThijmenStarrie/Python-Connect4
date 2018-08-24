@@ -49,7 +49,7 @@ def falling(player, column):
         elif board[str(column) + "," +str(row)] != 0:
             break
         else:
-            time.sleep(0.25)
+            time.sleep(0.125)
             board[str(column) + "," + str(row-1)] = 0
 
 
@@ -95,22 +95,30 @@ def winnercheck(player):
     print(lastturn)
     xy = lastturn
     x,y = xy.split(",")
-#   checkleftup
-    leftup = 0
     checkx = int(x)
     checky = int(y)
     print(str(checkx) + str(checky))
+    leftup = check(x, y, -1, -1, player)
+    middleup = check(x, y, 0, -1, player)
+    rightup = check(x, y, 1, -1, player)
+    leftmiddle = check(x, y, -1, 0, player)
+
+    print(leftup)
+    print(middleup)
+    print(rightup)
+
 
 
 def check(x, y, offsetx, offsety, player):
     streak = 0
     checkx = int(x)
     checky = int(y)
-    print(str(checkx) + str(checky))
     while True:
-        checkx -= offsetx
-        checky -= offsety
+        checkx += offsetx
+        checky += offsety
+        print(str(checkx) + str(checky))
         try:
+            print(board[str(checkx) + "," + str(checky)])
             if board[str(checkx) + "," + str(checky)] == player:
                 streak += 1
             else:
@@ -118,9 +126,9 @@ def check(x, y, offsetx, offsety, player):
         except KeyError:
             break
     return streak
+
+
 # setup
-
-
 maxrow = 7
 maxcolumn = 6
 board = {}
