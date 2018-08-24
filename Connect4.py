@@ -11,17 +11,28 @@
 import time
 import os
 
+
 def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
     print("")
 
 
+def setupboard():
+    rangerow = 1
+    rangecolumn = 1
+    while rangerow != maxrow + 1:
+        while rangecolumn != maxcolumn + 1:
+            board[str(rangecolumn) + "," + str(rangerow)] = 0
+            rangecolumn += 1
+        rangerow += 1
+        rangecolumn = 1
+
+
 def turn(player):
     entering = True
     while entering is True:
-        print(currentplayer)
         try:
-            column = input("Choose a column: (1-" + str(maxcolumn) + " ): ")
+            column = input("\nChoose a column: (1-" + str(maxcolumn) + " ): ")
             if column == "q":
                 quit()
             if board[str(int(column)) + "," + "1"] == 0:
@@ -30,9 +41,9 @@ def turn(player):
                 falling(player, column)
             else:
                 print("This column is full")
-        except ValueError and KeyError:
+        except ValueError or KeyError:
             render()
-            print("Enter a valid number")
+            print("\nEnter a valid number")
 
 
 def falling(player, column):
@@ -46,7 +57,7 @@ def falling(player, column):
         row += 1
         if row == maxrow + 1:
             break
-        elif board[str(column) + "," +str(row)] != 0:
+        elif board[str(column) + "," + str(row)] != 0:
             break
         else:
             time.sleep(0.125)
@@ -58,12 +69,12 @@ def render():
     line1 = "     "
     rangerow = 1
     rangecolumn = 1
-    while rangecolumn != maxcolumn +1:
+    while rangecolumn != maxcolumn + 1:
         line1 += str(rangecolumn) + "  "
         rangecolumn += 1
     print(line1)
     rangecolumn = 1
-    while rangerow != maxrow +1:
+    while rangerow != maxrow + 1:
         line = "  " + str(rangerow) + "  "
         while rangecolumn != maxcolumn + 1:
             if board[str(rangecolumn) + "," + str(rangerow)] == 0:
@@ -81,19 +92,9 @@ def render():
         print(line)
 
 
-def setupboard():
-    rangerow = 1
-    rangecolumn = 1
-    while rangerow != maxrow +1:
-        while rangecolumn != maxcolumn + 1:
-            board[str(rangecolumn) + "," + str(rangerow)] = 0
-            rangecolumn += 1
-        rangerow += 1
-        rangecolumn = 1
-
 def winnercheck(player):
     xy = lastturn
-    x,y = xy.split(",")
+    x, y = xy.split(",")
     leftup = check(x, y, -1, -1, player)
     middleup = check(x, y, 0, -1, player)
     rightup = check(x, y, 1, -1, player)
@@ -102,13 +103,14 @@ def winnercheck(player):
     leftdown = check(x, y, -1, 1, player)
     middledown = check(x, y, 0, 1, player)
     rightdown = check(x, y, 1, 1, player)
-    print(leftup + rightdown)
-    print(middleup + middledown)
-    print(leftdown + rightup)
-    print(leftmiddle + rightmiddle)
-    if leftup + rightdown >= 3 or middleup + middledown >= 3 or leftdown + rightup >= 3 or leftmiddle + rightmiddle >= 3:
+    if leftup + rightdown >= 3:
         return True
-
+    elif middleup + middledown >= 3:
+        return True
+    elif leftdown + rightup >= 3:
+        return True
+    elif leftmiddle + rightmiddle >= 3:
+        return True
 
 
 def check(x, y, offsetx, offsety, player):
@@ -118,7 +120,6 @@ def check(x, y, offsetx, offsety, player):
     while True:
         checkx += offsetx
         checky += offsety
-        print(str(checkx) + str(checky))
         try:
             if board[str(checkx) + "," + str(checky)] == player:
                 streak += 1
@@ -126,27 +127,36 @@ def check(x, y, offsetx, offsety, player):
                 break
         except KeyError:
             break
-    print(streak)
     return streak
 
 
-# setup
-maxrow = 7
-maxcolumn = 6
-board = {}
-setupboard()
-currentplayer = 1
-
-# main game loop
 while True:
-    render()
-    turn(currentplayer)
-    if winnercheck(currentplayer) is True:
-        print("the winner is " + str(currentplayer))
-        break
-    if currentplayer == 1:
-        currentplayer = 2
-    else:
-        currentplayer = 1
+    # setup
+    maxrow = 7
+    maxcolumn = 6
+    board = {}
+    setupboard()
+    currentplayer = 1
 
-print("Game is over")
+    render()
+    print("\nWelcome to connect four...")
+    time.sleep(0.25)
+    print("\nEnter the number of the column you want to drop your checkers in...\n")
+
+    while True:  # main game loop
+        turn(currentplayer)
+        if winnercheck(currentplayer) is True:
+            break
+        if currentplayer == 1:
+            currentplayer = 2
+        else:
+            currentplayer = 1
+        render()
+
+    if currentplayer == 1:
+        print("\nThe winner is 'x'")
+    elif currentplayer == 2:
+        print("The winner is 'O'")
+    playAgain = str(input("\nDo you want to play again? [Y]es or [N]o: ")).lower()
+    if playAgain == "n" or "no":
+        break
