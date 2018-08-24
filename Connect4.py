@@ -147,7 +147,7 @@ while True:
     if currentplayer == 1:
         print("\nThe winner is 'x'")
     elif currentplayer == 2:
-        print("The winner is 'O'")
+        print("\nThe winner is 'O'")
     playAgain = str(input("\nDo you want to play again? [Y]es or [N]o: ")).lower()
     if playAgain == "n" or "no":
         break
