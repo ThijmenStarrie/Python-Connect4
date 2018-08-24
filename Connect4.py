@@ -1,13 +1,3 @@
-
-
-#     1  2  3  4  5  6  7
-#  1  X  -  -  -  -  -  -
-#  2  O  -  -  -  -  -  -
-#  3  -  -  -  -  -  -  -
-#  4  -  -  -  -  -  -  -
-#  5  -  X  -  -  -  X  -
-#  6  X  O  -  -  O  X  -
-
 import time
 import os
 
@@ -32,8 +22,9 @@ def turn(player):
     entering = True
     while entering is True:
         try:
+            time.sleep(0.25)
             column = input("\nChoose a column: (1-" + str(maxcolumn) + " ): ")
-            if column == "q":
+            if column == "quit":
                 quit()
             if board[str(int(column)) + "," + "1"] == 0:
                 render()
@@ -140,8 +131,8 @@ while True:
 
     render()
     print("\nWelcome to connect four...")
-    time.sleep(0.25)
-    print("\nEnter the number of the column you want to drop your checkers in...\n")
+    time.sleep(0.50)
+    print("\nEnter the number of the column you want to drop your checkers in...")
 
     while True:  # main game loop
         turn(currentplayer)
