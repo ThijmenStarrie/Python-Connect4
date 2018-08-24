@@ -92,20 +92,22 @@ def setupboard():
         rangecolumn = 1
 
 def winnercheck(player):
-    print(lastturn)
     xy = lastturn
     x,y = xy.split(",")
-    checkx = int(x)
-    checky = int(y)
-    print(str(checkx) + str(checky))
     leftup = check(x, y, -1, -1, player)
     middleup = check(x, y, 0, -1, player)
     rightup = check(x, y, 1, -1, player)
     leftmiddle = check(x, y, -1, 0, player)
-
-    print(leftup)
-    print(middleup)
-    print(rightup)
+    rightmiddle = check(x, y, 1, 0, player)
+    leftdown = check(x, y, -1, 1, player)
+    middledown = check(x, y, 0, 1, player)
+    rightdown = check(x, y, 1, 1, player)
+    print(leftup + rightdown)
+    print(middleup + middledown)
+    print(leftdown + rightup)
+    print(leftmiddle + rightmiddle)
+    if leftup + rightdown >= 3 or middleup + middledown >= 3 or leftdown + rightup >= 3 or leftmiddle + rightmiddle >= 3:
+        return True
 
 
 
@@ -118,13 +120,13 @@ def check(x, y, offsetx, offsety, player):
         checky += offsety
         print(str(checkx) + str(checky))
         try:
-            print(board[str(checkx) + "," + str(checky)])
             if board[str(checkx) + "," + str(checky)] == player:
                 streak += 1
             else:
                 break
         except KeyError:
             break
+    print(streak)
     return streak
 
 
@@ -141,10 +143,10 @@ while True:
     turn(currentplayer)
     if winnercheck(currentplayer) is True:
         print("the winner is " + str(currentplayer))
-
+        break
     if currentplayer == 1:
         currentplayer = 2
     else:
         currentplayer = 1
 
-print("Testing git")
+print("Game is over")
