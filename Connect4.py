@@ -77,6 +77,8 @@ def render():
                 line += "X  "
             elif board[str(rangecolumn) + "," + str(rangerow)] == 2:
                 line += "O  "
+            elif board[str(rangecolumn) + "," + str(rangerow)] == 3:
+                line += "   "
             else:
                 print("Error")
 
@@ -89,25 +91,65 @@ def render():
 def winnercheck(player):
     xy = lastturn
     x, y = xy.split(",")
-    leftup = check(x, y, -1, -1, player)
-    middleup = check(x, y, 0, -1, player)
-    rightup = check(x, y, 1, -1, player)
-    leftmiddle = check(x, y, -1, 0, player)
-    rightmiddle = check(x, y, 1, 0, player)
-    leftdown = check(x, y, -1, 1, player)
-    middledown = check(x, y, 0, 1, player)
-    rightdown = check(x, y, 1, 1, player)
-    if leftup + rightdown >= 3:
+    diagonaldownxy = [xy]
+    verticalxy = [xy]
+    diagonalupxy = [xy]
+    horizontalxy = [xy]
+    diagonaldown = check(diagonaldownxy, x, y, -1, -1, player) + check(diagonaldownxy, x, y, 1, 1, player)
+    vertical = check(verticalxy, x, y, 0, -1, player) + check(verticalxy, x, y, 0, 1, player)
+    diagonalup = check(diagonalupxy, x, y, -1, 1, player) + check(diagonalupxy, x, y, 1, -1, player)
+    horizontal = check(horizontalxy, x, y, -1, 0, player) + check(horizontalxy, x, y, 1, 0, player)
+    if diagonalup >= 3:
+        time.sleep(0.5)
+        for number in range(1, 5):
+            for xy in diagonalupxy:
+                board[xy] = 3
+            render()
+            time.sleep(0.5)
+            for xy in diagonalupxy:
+                board[xy] = player
+            render()
+            time.sleep(0.5)
         return True
-    elif middleup + middledown >= 3:
+    elif diagonaldown >= 3:
+        time.sleep(0.5)
+        for number in range(1, 5):
+            for xy in diagonaldownxy:
+                board[xy] = 3
+            render()
+            time.sleep(0.5)
+            for xy in diagonaldownxy:
+                board[xy] = player
+                render()
+            time.sleep(0.5)
         return True
-    elif leftdown + rightup >= 3:
+    elif vertical >= 3:
+        time.sleep(0.5)
+        for number in range(1, 5):
+            for xy in verticalxy:
+                board[xy] = 3
+            render()
+            time.sleep(0.5)
+            for xy in verticalxy:
+                board[xy] = player
+            render()
+            time.sleep(0.5)
         return True
-    elif leftmiddle + rightmiddle >= 3:
+    elif horizontal >= 3:
+        time.sleep(0.5)
+        for number in range(1, 5):
+            for xy in horizontalxy:
+                board[xy] = 3
+            render()
+            time.sleep(0.5)
+            for xy in horizontalxy:
+                board[xy] = player
+            render()
+            time.sleep(0.5)
         return True
 
 
-def check(x, y, offsetx, offsety, player):
+def check(linetype, x, y, offsetx, offsety, player):
     streak = 0
     checkx = int(x)
     checky = int(y)
@@ -117,6 +159,7 @@ def check(x, y, offsetx, offsety, player):
         try:
             if board[str(checkx) + "," + str(checky)] == player:
                 streak += 1
+                linetype.append(str(checkx) + "," + str(checky))
             else:
                 break
         except KeyError:
