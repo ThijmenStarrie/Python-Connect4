@@ -108,7 +108,7 @@ def winnercheck(player):
             time.sleep(0.5)
             for xy in diagonalupxy:
                 board[xy] = player
-            render()
+                render()
             time.sleep(0.5)
         return True
     elif diagonaldown >= 3:
@@ -132,7 +132,7 @@ def winnercheck(player):
             time.sleep(0.5)
             for xy in verticalxy:
                 board[xy] = player
-            render()
+                render()
             time.sleep(0.5)
         return True
     elif horizontal >= 3:
@@ -144,7 +144,7 @@ def winnercheck(player):
             time.sleep(0.5)
             for xy in horizontalxy:
                 board[xy] = player
-            render()
+                render()
             time.sleep(0.5)
         return True
 
