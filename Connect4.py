@@ -2,12 +2,12 @@ import time
 import os
 
 
-def clear():
+def clear():  # this function clears the output
     os.system('cls' if os.name == 'nt' else 'clear')
     print("")
 
 
-def setupboard():
+def setupboard():  # this function produces a dictionary of the coordinates on the board
     rangerow = 1
     rangecolumn = 1
     while rangerow != maxrow + 1:
@@ -18,7 +18,7 @@ def setupboard():
         rangecolumn = 1
 
 
-def turn(player):
+def turn(player):  # this function handles the player input
     entering = True
     while entering is True:
         try:
@@ -40,7 +40,7 @@ def turn(player):
             print("\nEnter a valid number")
 
 
-def falling(player, column):
+def falling(player, column):  # this functions makes sure that the checkers 'fall'
     global lastturn
     fall = True
     row = 1
@@ -58,7 +58,7 @@ def falling(player, column):
             board[str(column) + "," + str(row-1)] = 0
 
 
-def render():
+def render():  # this function converts the dictionary of coordinates and value's to something (most) humans can read
     clear()
     line1 = "    "
     rangerow = 1
@@ -88,7 +88,7 @@ def render():
         print(line)
 
 
-def winnercheck(player):
+def winnercheck(player):  # this function checks if there is a row of four around the last checker using check()
     xy = lastturn
     x, y = xy.split(",")
     diagonaldownxy = [xy]
@@ -108,6 +108,7 @@ def winnercheck(player):
             time.sleep(0.5)
             for xy in diagonalupxy:
                 board[xy] = player
+                time.sleep(0.1)
                 render()
             time.sleep(0.5)
         return True
@@ -120,6 +121,7 @@ def winnercheck(player):
             time.sleep(0.5)
             for xy in diagonaldownxy:
                 board[xy] = player
+                time.sleep(0.1)
                 render()
             time.sleep(0.5)
         return True
@@ -132,6 +134,7 @@ def winnercheck(player):
             time.sleep(0.5)
             for xy in verticalxy:
                 board[xy] = player
+                time.sleep(0.1)
                 render()
             time.sleep(0.5)
         return True
@@ -144,12 +147,13 @@ def winnercheck(player):
             time.sleep(0.5)
             for xy in horizontalxy:
                 board[xy] = player
+                time.sleep(0.1)
                 render()
             time.sleep(0.5)
         return True
 
 
-def check(linetype, x, y, offsetx, offsety, player):
+def check(linetype, x, y, offsetx, offsety, player):  # this function does the actual checking
     streak = 0
     checkx = int(x)
     checky = int(y)
@@ -191,7 +195,7 @@ while True:
         render()
 
     if currentplayer == 1:
-        print("\nThe winner is 'x'")
+        print("\nThe winner is 'X'")
     elif currentplayer == 2:
         print("\nThe winner is 'O'")
     playAgain = str(input("\nDo you want to play again? [Y]es or [N]o: ")).lower()
