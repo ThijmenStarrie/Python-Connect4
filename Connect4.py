@@ -23,7 +23,10 @@ def turn(player):  # this function handles the player input
     while entering is True:
         try:
             time.sleep(0.25)
-            column = input("\nChoose a column: (1-" + str(maxcolumn) + " ): ")
+            if player == 1:
+                column = input("\nX: Choose a column: (1-" + str(maxcolumn) + "): ")
+            elif player == 2:
+                column = input("\nO: Choose a column: (1-" + str(maxcolumn) + "): ")
             if column == "quit":
                 quit()
             if board[str(int(column)) + "," + "1"] == 0:
@@ -60,25 +63,25 @@ def falling(player, column):  # this functions makes sure that the checkers 'fal
 
 def render():  # this function converts the dictionary of coordinates and value's to something (most) humans can read
     clear()
-    line1 = "    "
+    line1 = "    " + " " * ((len(str(maxrow))) - 1)
     rangerow = 1
     rangecolumn = 1
     while rangecolumn != maxcolumn + 1:
-        line1 += str(rangecolumn) + "  "
+        line1 += str(rangecolumn) + " " * (2 + (len(str(maxcolumn))) - len(str(rangecolumn)))
         rangecolumn += 1
     print(line1)
     rangecolumn = 1
     while rangerow != maxrow + 1:
-        line = " " + str(rangerow) + "  "
+        line = " " + str(rangerow) + " " * (2 + (len(str(maxrow))) - len(str(rangerow)))
         while rangecolumn != maxcolumn + 1:
             if board[str(rangecolumn) + "," + str(rangerow)] == 0:
-                line += "-  "
+                line += "-" + " " * (1 + len(str(maxcolumn)))
             elif board[str(rangecolumn) + "," + str(rangerow)] == 1:
-                line += "X  "
+                line += "X" + " " * (1 + len(str(maxcolumn)))
             elif board[str(rangecolumn) + "," + str(rangerow)] == 2:
-                line += "O  "
+                line += "O" + " " * (1 + len(str(maxcolumn)))
             elif board[str(rangecolumn) + "," + str(rangerow)] == 3:
-                line += "   "
+                line += " " + " " * (1 + len(str(maxcolumn)))
             else:
                 print("Error")
 
@@ -99,7 +102,7 @@ def winnercheck(player):  # this function checks if there is a row of four aroun
     vertical = check(verticalxy, x, y, 0, -1, player) + check(verticalxy, x, y, 0, 1, player)
     diagonalup = check(diagonalupxy, x, y, -1, 1, player) + check(diagonalupxy, x, y, 1, -1, player)
     horizontal = check(horizontalxy, x, y, -1, 0, player) + check(horizontalxy, x, y, 1, 0, player)
-    if diagonalup >= 3:
+    if diagonalup >= connectx - 1:
         time.sleep(0.5)
         for number in range(1, 5):
             for xy in diagonalupxy:
@@ -112,7 +115,7 @@ def winnercheck(player):  # this function checks if there is a row of four aroun
                 render()
             time.sleep(0.5)
         return True
-    elif diagonaldown >= 3:
+    elif diagonaldown >= connectx - 1:
         time.sleep(0.5)
         for number in range(1, 5):
             for xy in diagonaldownxy:
@@ -125,7 +128,7 @@ def winnercheck(player):  # this function checks if there is a row of four aroun
                 render()
             time.sleep(0.5)
         return True
-    elif vertical >= 3:
+    elif vertical >= connectx - 1:
         time.sleep(0.5)
         for number in range(1, 5):
             for xy in verticalxy:
@@ -138,7 +141,7 @@ def winnercheck(player):  # this function checks if there is a row of four aroun
                 render()
             time.sleep(0.5)
         return True
-    elif horizontal >= 3:
+    elif horizontal >= connectx - 1:
         time.sleep(0.5)
         for number in range(1, 5):
             for xy in horizontalxy:
@@ -175,12 +178,28 @@ while True:
     # setup
     maxrow = 7
     maxcolumn = 6
+    connectx = 4
     board = {}
     setupboard()
     currentplayer = 1
 
     render()
     print("\nWelcome to connect four...")
+    gamemode = input("Do you want to play the [CL]assic or the [CU]stom gamemode? ").lower()
+    if gamemode == "cu" or gamemode == "custom":
+        while True:
+            try:
+                maxcolumn = int(input("\nHow many columns do you want? "))
+                maxrow = int(input("How many rows do you want? "))
+                connectx = int(input("How many checkers must be connected to win? "))
+            except ValueError:
+                print("Please enter valid numbers...")
+            if maxcolumn > 0 and maxrow > 0 and connectx > 0:
+                break
+            else:
+                print("Please only enter values that are greather than zero...")
+    setupboard()
+    render()
     time.sleep(0.50)
     print("\nEnter the number of the column you want to drop your checkers in...")
 
