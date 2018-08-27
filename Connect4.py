@@ -40,13 +40,13 @@ def player_input(player):  # this function handles the player input
                 entering = False
                 falling_animation(player, column)
             else:
-                print("\nThis column is full")
+                print("This column is full\n")
         except ValueError:
             render_dict()
-            print("\nEnter a valid number")
+            print("Enter a valid number\n")
         except KeyError:
             render_dict()
-            print("\nEnter a valid number")
+            print("Enter a valid number\n")
 
 
 def falling_animation(player, column):  # this functions makes sure that the checkers 'fall'
